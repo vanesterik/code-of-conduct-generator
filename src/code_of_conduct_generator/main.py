@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import click
@@ -35,6 +35,9 @@ contractors and freelancers.
 
     print(52 * "-" + "\n")
 
+    # Prompt user for contractor name
+    contractor_name = click.prompt("Enter name of contractor")
+
     # Prompt user for agency name
     agency_name = click.prompt("Enter name of agency or organization")
 
@@ -52,7 +55,11 @@ contractors and freelancers.
     template = env.get_template("code_of_conduct.jinja")
 
     # Render template and store result
-    output = template.render(agency_name=agency_name)
+    output = template.render(
+        date=date.today().strftime("%-d %B %Y"),
+        contractor_name=contractor_name,
+        agency_name=agency_name,
+    )
 
     # Define output path and write to file
     output_path = output_dir / f"{to_kebab(agency_name)}.md"
